@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Book } from './book/book';
 import { newBookInput } from './dto/newBook.input';
 
@@ -28,31 +30,30 @@ let books = [
 
 @Injectable()
 export class BooksService {
+  constructor(
+    @InjectRepository(Book)
+    private booksRepository: Repository<Book>
+  ) {}
+
+
   findAll(): Promise<Book[]> {
-    return Promise.resolve(books)
+    return this.booksRepository.find()
   }
 
   findOneById(id: number): Promise<Book> {
-    const book = books.find(book => book.id === id)
-
-    return Promise.resolve(book)
+    return this.booksRepository.findOneById(id)
   }
 
-  create(data: newBookInput): Promise<Book> {
-    const book = {
-      ...data,
-      id: Date.now(),
-      createdAt: new Date()
-    }
-
-    books.push(book)
-
-    return Promise.resolve(book)
+  async create(data: newBookInput): Promise<Book> {
+    const book = this.booksRepository.create(data)
+    await this.booksRepository.save(book)
+    
+    return book
   }
 
   async remove(id: number): Promise<boolean> {
-    books = books.filter(book => book.id !== id)
+    const result = await this.booksRepository.delete(id)
 
-    return true
+    return result.affected > 0
   }
 }
