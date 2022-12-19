@@ -1,7 +1,7 @@
-import { Book } from './book';
+import { Book } from "./book"
 
-describe('Book', () => {
-  it('should be defined', () => {
-    expect(new Book()).toBeDefined();
-  });
-});
+describe("Book", () => {
+  it("should be defined", () => {
+    expect(new Book()).toBeDefined()
+  })
+})

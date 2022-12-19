@@ -5,7 +5,7 @@ import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeor
 @ObjectType()
 export class Book {
   @PrimaryGeneratedColumn()
-  @Field(type => ID)
+  @Field((type) => ID)
   id: number
 
   @Column({ length: "30" })
@@ -17,7 +17,7 @@ export class Book {
   author: string
 
   @Column({ type: "int", unsigned: true })
-  @Field(type => Int)
+  @Field((type) => Int)
   price: number
 
   @CreateDateColumn()
